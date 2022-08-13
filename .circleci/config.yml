@@ -15,17 +15,6 @@ jobs:
       - checkout
       - run: npm i
       - run: npm run test
-      - run:
-          name: Add ip to ansible inventory
-          command: |
-            PUBLIC_IP=$(aws ec2 describe-instances \
-              --filters "Name=tag:Project,Values=udapeople"\
-              --query 'Reservations[*].Instances[*].PublicIpAddress' \
-              --output text) >> inventory
-      - persist_to_workspace:
-          root: ~/
-          paths:
-            - inventory
   analyze:
     docker:
       - image: circleci/node:13.8.0
@@ -36,10 +25,10 @@ jobs:
 workflows:
   my_workflow:
     jobs:
-      # - build
-      - test
-          # requires:
-          #   - build
+      - build
+      - test:
+          requires:
+            - build
       # - analyze:
       #     requires:
       #       - test
