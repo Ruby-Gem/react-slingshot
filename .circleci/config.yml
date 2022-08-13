@@ -19,7 +19,7 @@ jobs:
           name: Add ip to ansible inventory
           command: |
             PUBLIC_IP=$(aws ec2 describe-instances \
-              --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" \
+              --filters "Name=tag:Project,Values=udapeople"\
               --query 'Reservations[*].Instances[*].PublicIpAddress' \
               --output text) >> inventory
       - persist_to_workspace:
